@@ -268,12 +268,12 @@ EOF
                 utils_lib.run_cmd(self, cmd, timeout=3600, is_log_cmd=False, msg='Create ami for image mode testing based on {}'.format(bootc_base_image_compose_id))
 
             else:
-                cmd = "sudo grep region .aws/config | awk '{print $(3)}'| tr -d '\n'"
+                cmd = "sudo grep region ~/.aws/config | awk '{print $(3)}'| tr -d '\n'"
                 aws_region = utils_lib.run_cmd(self, cmd, msg='Check aws region')
                 if not aws_region:
                     self.FailTest('Please configure awscli')
                 else:
-                    cmd = "sudo podman run --rm -it --privileged --pull=newer -v ./.aws:/root/.aws:ro \
+                    cmd = "sudo podman run --rm -it --privileged --pull=newer -v ~/.aws:/root/.aws:ro \
 --env AWS_PROFILE=default -v /var/lib/containers/storage:/var/lib/containers/storage {} --local --type ami \
 --target-arch {} --aws-ami-name {} --aws-region {} --aws-bucket {} {}".format(
                                                                       bootc_image_builder,
